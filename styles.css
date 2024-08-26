@@ -1,0 +1,113 @@
+/* Estilo General */
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+/* Estilo para botón deshabilitado */
+.vote-button:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Contenedor Principal */
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Ranking */
+.ranking {
+    margin-bottom: 20px;
+}
+
+.ranking-item {
+    background: #eee;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    text-align: center;
+}
+
+.ranking-image {
+    width: 150px;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.crown {
+    font-size: 2em;
+    color: gold;
+}
+
+#top-player {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+#top-votes {
+    font-size: 1.2em;
+}
+
+/* Opciones de Voto */
+.options {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.option {
+    width: 45%;
+    background: #eee;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.option img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.vote-button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.vote-button:hover {
+    background: #0056b3;
+}
+
+/* Resultados */
+.result {
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+
+/* Pie de Página */
+footer {
+    margin-top: 20px;
+    padding: 10px;
+    background: #f4f4f4;
+    border-top: 1px solid #ddd;
+}
+
+footer p {
+    font-size: 0.9em;
+    color: #666;
+}
