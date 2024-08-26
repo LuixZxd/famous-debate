@@ -2,45 +2,51 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Debate: Messi vs Cristiano</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Messi vs Ronaldo</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>¿Quién es mejor?</h1>
-        <div class="ranking">
-            <h2>Ranking</h2>
-            <div class="ranking-item" id="ranking">
-                <!-- <img id="ranking-image" src="" alt="Jugador con más votos" class="ranking-image"> -->
-                <!-- <p class="crown">👑</p> -->
-                <p id="top-player">Nadie</p>
-                <p id="top-votes">0 votos</p>
+    <header>
+        <h1>Messi vs Ronaldo</h1>
+    </header>
+    <main>
+        <div class="player">
+            <img id="messi-img" src="messi.jpg" alt="Messi" class="player-img">
+            <div class="player-info">
+                <h2>Lionel Messi</h2>
+                <button id="messi-vote">Votar por Messi</button>
             </div>
         </div>
-        <div class="options">
-            <div class="option">
-                <h2>Messi</h2>
-                <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/62bf873b-e9df-40d4-828c-afc8da770e1d/dg3dkjf-3fdf4256-9240-4f0f-9069-560f5289f601.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzYyYmY4NzNiLWU5ZGYtNDBkNC04MjhjLWFmYzhkYTc3MGUxZFwvZGczZGtqZi0zZmRmNDI1Ni05MjQwLTRmMGYtOTA2OS01NjBmNTI4OWY2MDEucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.4IMTzEb-LHENJEDBRShZGgKC0GJK11ndaxjqxwQUq0k" alt="Messi" height="200">
-                <button class="vote-button" data-player="messi">Votar por Messi</button>
-                <p class="vote-count" id="messi-count"> 0 votos</p>
-            </div>
-            <div class="option">
+        <div class="player">
+            <img id="ronaldo-img" src="ronaldo.jpg" alt="Ronaldo" class="player-img">
+            <div class="player-info">
                 <h2>Cristiano Ronaldo</h2>
-                <img src="https://futbolete.com/apuestas/wp-content/uploads/2022/08/png-cristiano-ronaldo-cr7-manchester-united-31630453790pqhantyyxi-PhotoRoom.png" alt="Cristiano Ronaldo" height="200">
-                <button class="vote-button" data-player="cristiano">Votar por Cristiano</button>
-                <p class="vote-count" id="cristiano-count"> 0 votos</p>
+                <button id="ronaldo-vote">Votar por Ronaldo</button>
             </div>
         </div>
-        <div class="result">
-            <h3>Resultados</h3>
-            <p>Messi: <span id="messi-result">0</span> votos</p>
-            <p>Cristiano Ronaldo: <span id="cristiano-result">0</span> votos</p>
+        <section id="ranking-section">
+            <div id="top-player">
+                <img id="top-player-img" class="top-player-img" src="" alt="">
+                <h2 id="top-player-name">Empate</h2>
+                <p id="top-player-number"></p>
+            </div>
+            <ul id="ranking-list">
+                <li id="messi-ranking">Messi - 0 votos</li>
+                <li id="ronaldo-ranking">Ronaldo - 0 votos</li>
+            </ul>
+        </section>
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <p>¡Tu voto ha sido registrado!</p>
+                <button id="close-modal">Cerrar</button>
+            </div>
         </div>
-        <footer>
-            <p>Creado por 9MM COPORATIÓN</p>
-        </footer>
-    </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Messi vs Ronaldo</p>
+    </footer>
     <script src="script.js"></script>
 </body>
-</html>
+    </html>
+                    
