@@ -57,9 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentVotes = request.result ? request.result.votes : 0;
             objectStore.put({ player: vote, votes: currentVotes + 1 });
             if (vote === 'messi') {
-                playSound('messi.mp3');
+                playSound('messi-top.mp3');
             } else {
-                playSound('ronaldo.mp3');
+                playSound('ronaldo-top.mp3');
             }
             updateRanking();
             modal.classList.add('show');
