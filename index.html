@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debate: Messi vs Cristiano</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>¿Quién es mejor?</h1>
+        <div class="ranking">
+            <h2>Ranking</h2>
+            <div class="ranking-item" id="ranking">
+                <img id="ranking-image" src="" alt="Jugador con más votos" class="ranking-image">
+                <p class="crown">👑</p>
+                <p id="top-player">Nadie</p>
+                <p id="top-votes">0 votos</p>
+            </div>
+        </div>
+        <div class="options">
+            <div class="option">
+                <h2>Messi</h2>
+                <img src="images/messi.jpg" alt="Messi">
+                <button class="vote-button" data-player="messi">Votar por Messi</button>
+                <p class="vote-count" id="messi-count">0 votos</p>
+            </div>
+            <div class="option">
+                <h2>Cristiano Ronaldo</h2>
+                <img src="images/cristiano.jpg" alt="Cristiano Ronaldo">
+                <button class="vote-button" data-player="cristiano">Votar por Cristiano</button>
+                <p class="vote-count" id="cristiano-count">0 votos</p>
+            </div>
+        </div>
+        <div class="result">
+            <h3>Resultados</h3>
+            <p>Messi: <span id="messi-result">0</span> votos</p>
+            <p>Cristiano Ronaldo: <span id="cristiano-result">0</span> votos</p>
+        </div>
+        <footer>
+            <p>Creado por Luis EFZ</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
