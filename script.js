@@ -1,72 +1,78 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicializar contadores de votos con valores almacenados en localStorage o 0 si no existen
-    let votes = {
-        messi: parseInt(localStorage.getItem('votes.messi')) || 0,
-        cristiano: parseInt(localStorage.getItem('votes.cristiano')) || 0
-    };
+    const messiButton = document.getElementById('messi-vote');
+    const ronaldoButton = document.getElementById('ronaldo-vote');
+    const modal = document.getElementById('modal');
+    const closeModalButton = document.getElementById('close-modal');
+    const feedback = document.createElement('div');
+    feedback.className = 'vote-feedback';
+    feedback.textContent = '¡Voto registrado!';
+    document.body.appendChild(feedback);
 
-    // Variables de control para el tiempo de espera
-    let canVote = true;
-    const cooldownTime = 5000; // 5000 ms = 5 segundos
+    let messiVotes = localStorage.getItem('messiVotes') ? parseInt(localStorage.getItem('messiVotes')) : 0;
+    let ronaldoVotes = localStorage.getItem('ronaldoVotes') ? parseInt(localStorage.getItem('ronaldoVotes')) : 0;
 
-    // Obtener elementos del DOM
-    const messiButton = document.querySelector('button[data-player="messi"]');
-    const cristianoButton = document.querySelector('button[data-player="cristiano"]');
-    const messiCount = document.getElementById('messi-count');
-    const cristianoCount = document.getElementById('cristiano-count');
-    const messiResult = document.getElementById('messi-result');
-    const cristianoResult = document.getElementById('cristiano-result');
-    const rankingImage = document.getElementById('ranking-image');
-    const topPlayer = document.getElementById('top-player');
-    const topVotes = document.getElementById('top-votes');
+    function updateRanking() {
+        const topPlayer = document.getElementById('top-player');
+        const topPlayerImg = document.getElementById('top-player-img');
+        const topPlayerName = document.getElementById('top-player-name');
+        const topPlayerNumber = document.getElementById('top-player-number');
+        const messiRanking = document.getElementById('messi-ranking');
+        const ronaldoRanking = document.getElementById('ronaldo-ranking');
 
-    // Función para actualizar los contadores y resultados
-    function updateVotes() {
-        messiCount.textContent = `${votes.messi} votos`;
-        cristianoCount.textContent = `${votes.cristiano} votos`;
-        messiResult.textContent = votes.messi;
-        cristianoResult.textContent = votes.cristiano;
-
-        // Determinar el jugador con más votos
-        if (votes.messi > votes.cristiano) {
-            topPlayer.textContent = 'Messi';
-            topVotes.textContent = `${votes.messi} votos`;
-            rankingImage.src = 'images/messi.jpg'; // Imagen de Messi
-        } else if (votes.cristiano > votes.messi) {
-            topPlayer.textContent = 'Cristiano Ronaldo';
-            topVotes.textContent = `${votes.cristiano} votos`;
-            rankingImage.src = 'images/cristiano.jpg'; // Imagen de Cristiano Ronaldo
+        if (messiVotes > ronaldoVotes) {
+            topPlayerImg.src = 'messi.jpg';
+            topPlayerName.textContent = 'Lionel Messi';
+            topPlayerNumber.textContent = '#1';
+            messiRanking.classList.add('highlight');
+            ronaldoRanking.classList.remove('highlight');
+        } else if (ronaldoVotes > messiVotes) {
+            topPlayerImg.src = 'ronaldo.jpg';
+            topPlayerName.textContent = 'Cristiano Ronaldo';
+            topPlayerNumber.textContent = '#1';
+            ronaldoRanking.classList.add('highlight');
+            messiRanking.classList.remove('highlight');
         } else {
-            topPlayer.textContent = 'Empate';
-            topVotes.textContent = `${votes.messi} votos`;
-            rankingImage.src = ''; // No mostrar imagen si hay empate
+            topPlayerImg.src = '';
+            topPlayerName.textContent = 'Empate';
+            topPlayerNumber.textContent = '';
+            messiRanking.classList.remove('highlight');
+            ronaldoRanking.classList.remove('highlight');
         }
-
-        // Guardar los votos en localStorage
-        localStorage.setItem('votes.messi', votes.messi);
-        localStorage.setItem('votes.cristiano', votes.cristiano);
+        messiRanking.textContent = `Messi - ${messiVotes} votos`;
+        ronaldoRanking.textContent = `Ronaldo - ${ronaldoVotes} votos`;
     }
 
-    // Función para manejar el clic en los botones
-    function handleVote(player) {
-        if (!canVote) return; // No permitir votar si aún no ha pasado el tiempo
+    function handleVote(vote) {
+        if (document.querySelector('button:disabled')) return;
 
-        canVote = false; // Deshabilitar el botón
-        votes[player]++;
-        updateVotes();
+        document.querySelectorAll('button').forEach(btn => btn.disabled = true);
+        feedback.style.display = 'block';
+        setTimeout(() => feedback.style.display = 'none', 2000);
 
-        // Rehabilitar el botón después del tiempo de espera
-        setTimeout(() => {
-            canVote = true;
-        }, cooldownTime);
+        if (vote === 'messi') {
+            messiVotes++;
+            localStorage.setItem('messiVotes', messiVotes);
+            playSound('messi-top.mp3');
+        } else {
+            ronaldoVotes++;
+            localStorage.setItem('ronaldoVotes', ronaldoVotes);
+            playSound('ronaldo.mp3');
+        }
+        updateRanking();
+        modal.classList.add('show');
+        setTimeout(() => modal.classList.remove('show'), 5000);
+        setTimeout(() => document.querySelectorAll('button').forEach(btn => btn.disabled = false), 5000);
     }
 
-    // Evento de clic para el botón de Messi
+    function playSound(file) {
+        const audio = new Audio(file);
+        audio.play();
+    }
+
     messiButton.addEventListener('click', () => handleVote('messi'));
+    ronaldoButton.addEventListener('click', () => handleVote('ronaldo'));
+    closeModalButton.addEventListener('click', () => modal.classList.remove('show'));
 
-    // Evento de clic para el botón de Cristiano Ronaldo
-    cristianoButton.addEventListener('click', () => handleVote('cristiano'));
-
-    // Inicializar la vista
-    updateVotes();
+    // Initialize ranking on page load
+    updateRanking();
 });
