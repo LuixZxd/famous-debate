@@ -8,10 +8,72 @@ document.addEventListener('DOMContentLoaded', () => {
     feedback.textContent = '¡Voto registrado!';
     document.body.appendChild(feedback);
 
-    let messiVotes = localStorage.getItem('messiVotes') ? parseInt(localStorage.getItem('messiVotes')) : 0;
-    let ronaldoVotes = localStorage.getItem('ronaldoVotes') ? parseInt(localStorage.getItem('ronaldoVotes')) : 0;
+    // Initialize IndexedDB
+    const dbRequest = indexedDB.open('votesDB', 1);
+    let db;
+
+    dbRequest.onupgradeneeded = (event) => {
+        db = event.target.result;
+        const objectStore = db.createObjectStore('votes', { keyPath: 'player' });
+        objectStore.createIndex('player', 'player', { unique: true });
+    };
+
+    dbRequest.onsuccess = (event) => {
+        db = event.target.result;
+        updateRanking();
+    };
+
+    dbRequest.onerror = (event) => {
+        console.error('Database error:', event.target.errorCode);
+    };
 
     function updateRanking() {
+        const transaction = db.transaction(['votes'], 'readonly');
+        const objectStore = transaction.objectStore('votes');
+        const messiRequest = objectStore.get('messi');
+        const ronaldoRequest = objectStore.get('ronaldo');
+
+        messiRequest.onsuccess = () => {
+            messiVotes = messiRequest.result ? messiRequest.result.votes : 0;
+            ronaldoRequest.onsuccess = () => {
+                ronaldoVotes = ronaldoRequest.result ? ronaldoRequest.result.votes : 0;
+                render();
+            };
+        };
+    }
+
+    function handleVote(vote) {
+        if (document.querySelector('button:disabled')) return;
+
+        document.querySelectorAll('button').forEach(btn => btn.disabled = true);
+        feedback.style.display = 'block';
+        setTimeout(() => feedback.style.display = 'none', 2000);
+
+        const transaction = db.transaction(['votes'], 'readwrite');
+        const objectStore = transaction.objectStore('votes');
+        const request = objectStore.get(vote);
+
+        request.onsuccess = () => {
+            const currentVotes = request.result ? request.result.votes : 0;
+            objectStore.put({ player: vote, votes: currentVotes + 1 });
+            if (vote === 'messi') {
+                playSound('messi.mp3');
+            } else {
+                playSound('ronaldo.mp3');
+            }
+            updateRanking();
+            modal.classList.add('show');
+            setTimeout(() => modal.classList.remove('show'), 5000);
+            setTimeout(() => document.querySelectorAll('button').forEach(btn => btn.disabled = false), 5000);
+        };
+    }
+
+    function playSound(file) {
+        const audio = new Audio(file);
+        audio.play();
+    }
+
+    function render() {
         const topPlayer = document.getElementById('top-player');
         const topPlayerImg = document.getElementById('top-player-img');
         const topPlayerName = document.getElementById('top-player-name');
@@ -42,37 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ronaldoRanking.textContent = `Ronaldo - ${ronaldoVotes} votos`;
     }
 
-    function handleVote(vote) {
-        if (document.querySelector('button:disabled')) return;
-
-        document.querySelectorAll('button').forEach(btn => btn.disabled = true);
-        feedback.style.display = 'block';
-        setTimeout(() => feedback.style.display = 'none', 2000);
-
-        if (vote === 'messi') {
-            messiVotes++;
-            localStorage.setItem('messiVotes', messiVotes);
-            playSound('messi-top.mp3');
-        } else {
-            ronaldoVotes++;
-            localStorage.setItem('ronaldoVotes', ronaldoVotes);
-            playSound('ronaldo.mp3');
-        }
-        updateRanking();
-        modal.classList.add('show');
-        setTimeout(() => modal.classList.remove('show'), 5000);
-        setTimeout(() => document.querySelectorAll('button').forEach(btn => btn.disabled = false), 5000);
-    }
-
-    function playSound(file) {
-        const audio = new Audio(file);
-        audio.play();
-    }
-
     messiButton.addEventListener('click', () => handleVote('messi'));
     ronaldoButton.addEventListener('click', () => handleVote('ronaldo'));
     closeModalButton.addEventListener('click', () => modal.classList.remove('show'));
-
-    // Initialize ranking on page load
-    updateRanking();
 });
+                                           
